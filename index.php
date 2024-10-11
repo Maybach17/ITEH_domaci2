@@ -1,3 +1,62 @@
+
+<?php
+
+    session_start(); // zapocinjanje sesija
+    if(isset($_POST['username']) && isset($_POST['password']) ){
+
+        include 'korisnik.php'; // uključujemo 'korisnik.php' u trenutni fajl
+
+        // kupimo podatke
+        $usern = $_POST['username'];
+        $pass = $_POST['password'];
+
+
+        // kreiramo korisnika
+        $korisnik = new Korisnik(null, $usern, $pass);
+
+       // $odgovor = $korisnik->logovanje($usern, $pass,$conn);
+        $odgovor = Korisnik::logovanje($korisnik); //pristup funkcija tipa static
+
+        if($odgovor == true){
+
+            $_SESSION['user_id']=$korisnik->id;
+            header('Location: home.php');
+            exit();
+        }
+        else{
+            ?>
+            <html>
+                <style>
+                    #obavestenje1{
+                    position: fixed;
+                    /*z-index: 999;*/
+                    top:70;
+                    color:red;
+                    }
+                    #obavestenje2{
+                        position:fixed;
+                        color:red;
+                        top:100;
+                    }
+            
+                
+                </style>
+
+                <h5 id = obavestenje1>Neuspešna prijava </h5>
+                <h7 id = obavestenje2> Korisnicko ime ili šifra nisu korektni !</h7>
+
+            </html>
+
+            <?php
+        }
+       
+
+
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
